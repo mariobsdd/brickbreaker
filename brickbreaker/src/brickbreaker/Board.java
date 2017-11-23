@@ -77,18 +77,14 @@ public class Board extends JPanel implements Runnable, Constants {
 		ball = new Ball(BALL_X_START, BALL_Y_START, BALL_WIDTH, BALL_HEIGHT, Color.BLACK);
 
 		//Get the player's name
-		playerName = JOptionPane.showInputDialog(null, "Please enter your name:", "Brick Breaker, Version 1.2", JOptionPane.QUESTION_MESSAGE);
+		playerName = JOptionPane.showInputDialog(null, "Ingresa tu Nombre:", "Rompe Ladrillos", JOptionPane.QUESTION_MESSAGE);
 		if (playerName == null) {
 			System.exit(0);
 		}
-		if (playerName.toUpperCase().equals("TY") || playerName.toUpperCase().equals("TYKELLEY") || playerName.toUpperCase().equals("TYLUCAS") || playerName.toUpperCase().equals("TYLUCASKELLEY") || playerName.toUpperCase().equals("TY-LUCAS") || playerName.toUpperCase().equals("TY-LUCAS KELLEY") || playerName.toUpperCase().equals("TY KELLEY")) {
-			score += 1000;
-			JOptionPane.showMessageDialog(null, "You unlocked the secret 1,000 point bonus! Nice name choice by the way.", "1,000 Points", JOptionPane.INFORMATION_MESSAGE);
-		}
 
 		//Start Screen that displays information and asks if the user wants music or not, stores that choice
-		String[] options = {"Yes", "No"};
-		withSound = JOptionPane.showOptionDialog(null, "Brick Breaker, Version 1.2\nTy-Lucas Kelley\nVisit www.tylucaskelley.com for more projects.\n\nControls\n    Spacebar: Start game, Pause/Resume while in game.\n    Left/Right arrow keys: Move paddle\nItems\n    Green Item: Expand paddle\n    Red Item: Shrink paddle\nScoring\n    Block: 50 points\n    Level-up: 100 points\n    Life Loss: -100 points\n\n\n     Do you want background music?", "About the Game", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+		String[] options = {"Si", "No"};
+		withSound = JOptionPane.showOptionDialog(null, "Rompe Ladrillos\nControles\n    ESPACIO: Iniciar nuevo juego. Pausar/Reanudar juego.\n    Flechas Izq/Der: Mover paddle\nItems\n    Item Verde: Expandir paddle\n    Item Rojo: Reducir paddle\nPUNTUACION:\n    Block: 50 pts\n    Level-up: 100 pts\n    Perder Vida: -100 pts\n\n\n     Desea escuchar música mientras juega?", "Acerca del Juego", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 		playMusic(trackList, withSound, level);
 
 		game = new Thread(this);
@@ -339,10 +335,10 @@ public class Board extends JPanel implements Runnable, Constants {
                 }
             }
             g.setColor(Color.BLACK);
-            g.drawString("Lives: " + lives, 10, getHeight() - (getHeight()/10));
-            g.drawString("Score: " + score, 10, getHeight() - (2*(getHeight()/10)) + 25);
-            g.drawString("Level: " + level, 10, getHeight() - (3*(getHeight()/10)) + 50);
-            g.drawString("Player: " + playerName, 10, getHeight() - (4*(getHeight()/10)) + 75);
+            g.drawString("Vidas: " + lives, 10, getHeight() - (getHeight()/10));
+            g.drawString("Puntuación: " + score, 10, getHeight() - (2*(getHeight()/10)) + 25);
+            g.drawString("Nivel: " + level, 10, getHeight() - (3*(getHeight()/10)) + 50);
+            g.drawString("Jugador: " + playerName, 10, getHeight() - (4*(getHeight()/10)) + 75);
 
             for (Item i: items) {
                 i.draw(g);
@@ -352,20 +348,20 @@ public class Board extends JPanel implements Runnable, Constants {
                 g.setColor(Color.BLACK);
                 g.fillRect(0,0,getWidth(),getHeight());
                 g.setColor(Color.WHITE);
-                g.drawString("Name: " + playerName + ", Score: " + score + ", Level: " + level, getWidth()/5, 20);
-                g.drawString("Game Over! Did you make it onto the high score table?", getWidth()/5, 50);
+                g.drawString("Nombre: " + playerName + ", Puntuación: " + score + ", Nivel: " + level, getWidth()/5, 20);
+                g.drawString("Juego Terminado! Revisa la lista de máximas puntiaciones:", getWidth()/5, 50);
                 try {
                     printScores(g);
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }
-                g.drawString("Press the Spacebar twice to play again.", getWidth()/5, getHeight()-20);
+                g.drawString("Presiona ESPACIO dos veces para jugar otra vez..", getWidth()/5, getHeight()-20);
             }
 	}
 
 	//Makes sure the HighScores.txt file exists
 	public void makeTable() throws IOException {
-            String filename = "HighScores";
+            String filename = "MaximasPuntuaciones";
             File f = new File(filename + ".txt");
             if (f.createNewFile()) {
                 try {
@@ -384,15 +380,15 @@ public class Board extends JPanel implements Runnable, Constants {
             Random rand = new Random();
 
             int numLines = 10;
-            File f = new File("HighScores.txt");
+            File f = new File("MaximasPuntuaciones.txt");
             BufferedWriter bw = new BufferedWriter(new FileWriter(f.getAbsoluteFile()));
             for (int i = 1; i <= numLines; i++) {
                 int score = rand.nextInt(2000);
                 if (numLines - i >= 1) {
-                    bw.write("Name: " + "Player" + i + ", " + "Score: " + score + "\n");
+                    bw.write("Nombre: " + "Jugador" + i + ", " + "Puntuación: " + score + "\n");
                 }
                 else {
-                    bw.write("Name: " + "Player" + i + ", " + "Score: " + score);
+                    bw.write("Nombre: " + "Jugador" + i + ", " + "Puntuación: " + score);
                 }
             }
             bw.close();
@@ -405,7 +401,7 @@ public class Board extends JPanel implements Runnable, Constants {
 
 	//Returns the player's name and score formatted correctly
 	public String playerInfo() {
-            return "Name: " + playerName + ", Score: " + score;
+            return "Nombre: " + playerName + ", Puntuación: " + score;
 	}
 
 	//returns the number of lines in the high score file
@@ -421,7 +417,7 @@ public class Board extends JPanel implements Runnable, Constants {
 
 	//Add game to high score file by appending it and getting line number from previous method
 	public void saveGame() throws IOException {
-            File f = new File("HighScores.txt");
+            File f = new File("MaximasPuntuaciones.txt");
             FileWriter fw = new FileWriter(f.getAbsoluteFile(), true);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.append("\n" + playerInfo());
@@ -430,7 +426,7 @@ public class Board extends JPanel implements Runnable, Constants {
 
 	//sorts the high score table high to low using maps and other fun things
 	public void sortTable() throws IOException {
-            File f = new File("HighScores.txt");
+            File f = new File("MaximasPuntuaciones.txt");
             File temp = new File("temp.txt");
             TreeMap<Integer, ArrayList<String>> topTen = new TreeMap<Integer, ArrayList<String>>();
             BufferedReader br = new BufferedReader(new FileReader(f.getAbsoluteFile()));
@@ -442,7 +438,7 @@ public class Board extends JPanel implements Runnable, Constants {
                 if (line.isEmpty()) {
                     continue;
                 }
-                String[] scores = line.split("Score: ");
+                String[] scores = line.split("Puntuación: ");
                 Integer score = Integer.valueOf(scores[1]);
                 ArrayList<String> players = null;
 
@@ -460,7 +456,7 @@ public class Board extends JPanel implements Runnable, Constants {
             for (Integer score : topTen.descendingKeySet()) {
                 for (String player : topTen.get(score)) {
                     try {
-                        bw.append(player + "Score: " + score + "\n");
+                        bw.append(player + "Puntuación: " + score + "\n");
                     } catch (IOException ioe) {
                         ioe.printStackTrace();
                     }
@@ -477,7 +473,7 @@ public class Board extends JPanel implements Runnable, Constants {
 
 	//save the sorted table to the high score file
 	public void makeNewScoreTable() throws IOException {
-            File f = new File("HighScores.txt");
+            File f = new File("MaximasPuntuaciones.txt");
             File g = new File("temp.txt");
             f.delete();
             g.renameTo(f);
@@ -501,7 +497,7 @@ public class Board extends JPanel implements Runnable, Constants {
                 ioe.printStackTrace();
             }
             int h = 100;
-            File fileToRead = new File("HighScores.txt");
+            File fileToRead = new File("MaximasPuntuaciones.txt");
             LineNumberReader lnr = new LineNumberReader(new FileReader(fileToRead));
             String line = lnr.readLine();
             while (line != null && lnr.getLineNumber() <= 10) {
