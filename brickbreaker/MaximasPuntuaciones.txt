@@ -10,3 +10,4 @@ Nombre: Mario, Puntuación: 600
 Nombre: Jugador10, Puntuación: 559
 Nombre: Jugador6, Puntuación: 365
 Nombre: Jugador5, Puntuación: 310
+Nombre: Mario, Puntuación: -400
